@@ -83,7 +83,7 @@ while True:
     elif opcao == "2" or opcao == "3" or opcao == "4" or opcao == "5":
         print("====== ATUALIZAÇÃO ======\n")
         print("    EM DESENVOLVIMENTO\n")
-        print("=" * 25)
+        print("=" * 25 )
 
     # senão, se a opção for = 9, volte para o menu principal
     elif opcao == "9":
