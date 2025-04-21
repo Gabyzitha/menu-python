@@ -2,8 +2,8 @@
 # Curso: Análise e desenvolvimento de sistemas
 
 
-#lista de estudantes vazia para coletar informações
-lista_estudantes = []
+#lista de pessoas vazia para coletar informações
+lista_pessoas = []
 
 def em_desenvolvimento():
     print("=" * 25)
@@ -28,23 +28,23 @@ def mostrar_menu_operacoes():
     print("(4) Excluir.")
     print("(9) Voltar ao menu principal.\n")
 
-#função de incluir códio, nome e cpf
+#função de incluir código, nome e cpf
 def incluir():
     print("============== INCLUIR ==============")
     while True:
         #pede o código, nome cpf ao usuário
-        codigo = int(input("\nInforme o código do estudante: "))
-        nome = input("Informe o nome do estudante: ")
-        cpf = input("Informe o CPF do estudante: ")
+        codigo = int(input("\nInforme o código: "))
+        nome = input("Informe o nome: ")
+        cpf = input("Informe o CPF: ")
 
         # coloca essas informações em um dicionário
-        cadastro_estudante = {"código": codigo, "nome": nome, "cpf": cpf}
-        # coloca esse dicionário na lista_estudantes
-        lista_estudantes.append(cadastro_estudante)
-        print("\nEstudante cadastrado com sucesso!\n")
+        pessoa_cadastrada = {"código": codigo, "nome": nome, "cpf": cpf}
+        # coloca esse dicionário na lista_pessoas
+        lista_pessoas.append(pessoa_cadastrada)
+        print("\n Cadastro feito com sucesso!\n")
 
         # se a resposta for = "n" volte para o menu de operações
-        if input("Deseja cadastrar um novo contato (s/n)? ") == "n":
+        if input("Deseja cadastrar uma nova pessoa (s/n)? ") == "n":
             break
 
     print("Pressione ENTER para continuar.\n")
@@ -53,14 +53,14 @@ def incluir():
 #função para exibir a lista
 def lista():
     print("=========== LISTA ===========\n")
-    # se a lista de estudantes estiver vazia, informe ao usuário
-    if len(lista_estudantes) == 0:
-        print("Não há estudantes cadastrados.\n")
+    # se a lista estiver vazia, informe ao usuário
+    if len(lista_pessoas) == 0:
+        print("Não há ninguém cadastrado no momento!.\n")
         print("=" * 29)
     # senão, exibir a lista
     else:
-        print("Lista de Estudantes:\n")
-        for i, dados in enumerate(lista_estudantes):
+        print("Lista de Cadastros:\n")
+        for i, dados in enumerate(lista_pessoas):
             print(dados)
         print("Pressione ENTER para continuar.\n")
         print("=" * 29)
@@ -69,39 +69,40 @@ def lista():
 def editar():
     print("=========== EDITAR ===========\n")
 
-    # coletando o código do estudante no qual o usuário deseja editar
-    codigo_editar = int(input("Informe o código do estudante que deseja editar: "))
+    # coletando o código da pessoa no qual o usuário deseja editar
+    codigo_editar = int(input("Informe o código da pessoa que deseja editar: "))
 
-    editar_estudante = None
+    editar_cadastro = None
 
-    for cadastro_estudante in lista_estudantes:
-        if cadastro_estudante["código"] == codigo_editar:
-            editar_estudante = cadastro_estudante
-            print("Por favor, edite os dados do estudante!\n")
-            editar_estudante["código"] = int(input("\nInforme o novo código do estudante: "))
-            editar_estudante["nome"] = input("Informe o novo nome do estudante: ")
-            editar_estudante["cpf"] = input("Informe o novo CPF do estudante: ")
-            print("\nEstudante editado com sucesso!\n")
+    for pessoa_cadastrada in lista_pessoas:
+        if pessoa_cadastrada["código"] == codigo_editar:
+            editar_cadastro = pessoa_cadastrada
+            print("Por favor, digite as novas informações de cadastro!\n")
+            editar_cadastro["código"] = int(input("\nInforme o novo código: "))
+            editar_cadastro["nome"] = input("Informe o novo nome: ")
+            editar_cadastro["cpf"] = input("Informe o novo CPF: ")
+            print("\nEdição feita com sucesso!\n")
             break
-        if editar_estudante is None:
-            print(f"Não encontramos o estudante de código: {codigo_editar}.\n")
+
+    if editar_cadastro is None:
+        print(f"Não encontramos a pessoa de código: {codigo_editar}.\n")
     print("=" * 29)
 
 def excluir():
     print("=========== EXCLUIR ===========\n")
 
-    # coletando o código do estudante no qual o usuário deseja excluir
-    codigo_excluir = int(input("Informe o código do estudante que deseja excluir: "))
+    # coletando o código da pessoa no qual o usuário deseja excluir
+    codigo_excluir = int(input("Informe o código da pessoa que deseja excluir: "))
 
-    remover_estudante = None
-    for dados_estudante in lista_estudantes:
-        if dados_estudante["código"] == codigo_excluir:
-            remover_estudante = dados_estudante
-            lista_estudantes.remove(remover_estudante)
-            print(" Estudante removido com sucesso!\n")
+    remover_cadastro = None
+    for pessoa_cadastrada in lista_pessoas:
+        if pessoa_cadastrada["código"] == codigo_excluir:
+            remover_cadastro = pessoa_cadastrada
+            lista_pessoas.remove(remover_cadastro)
+            print("Cadastro removido com sucesso!\n")
             break
-        elif remover_estudante is None:
-            print(f"Não encontramos o estudante de código: {codigo_excluir}.\n")
+        elif remover_cadastro is None:
+            print(f"Não encontramos a pessoa de código: {codigo_excluir}.\n")
     print("=" * 29)
 
 
