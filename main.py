@@ -2,10 +2,11 @@
 # Curso: Análise e desenvolvimento de sistemas
 
 import json
-
+from traceback import print_tb
 
 # lista de pessoas vazia para coletar informações
 lista_pessoas = []
+lista_de_turmas = []
 
 def em_desenvolvimento():
     print("=" * 25)
@@ -33,35 +34,57 @@ def mostrar_menu_operacoes():
     print("(9) Voltar ao menu principal.\n")
 
 
+def obter_dados_pessoa(incluir_cpf):
+    codigo = int(input("\nInforme o código: "))
+    nome = input("Informe o nome: ")
+    pessoa_cadastrada = {"código": codigo , "nome": nome}
+
+    if incluir_cpf:
+      cpf = input("Informe o CPF: ")
+      pessoa_cadastrada["cpf"] = cpf
+
+    return pessoa_cadastrada
+
+def obter_dados_turma():
+    codigo_turma = int(input("Informe o código da turma: "))
+    codigo_professor = int(input("Informe o código do professor: "))
+    codigo_disciplina = int(input("Informe o código da disciplina: "))
+    turma_cadastrada = {
+        "Código da turma": codigo_turma,
+        "Código do professor": codigo_professor,
+        "Código da disciplina": codigo_disciplina
+    }
+    return turma_cadastrada
+
 # função de incluir código, nome e cpf
-def incluir(nome_arquivo, lista_pessoas):
+def incluir(nome_arquivo, lista_pessoas, pessoa_cadastrada=True, incluir_cpf=True):
     print("============== INCLUIR ==============")
     while True:
         # pede o código, nome cpf ao usuário
        try:
-            codigo = int(input("\nInforme o código: "))
-            nome = input("Informe o nome: ")
-            cpf = input("Informe o CPF: ")
+           if pessoa_cadastrada:
+               pessoa_cadastrada = obter_dados_pessoa(incluir_cpf)
+               #atualiza a lista lendo o arquivo
+               lista_pessoas = ler_arquivo(nome_arquivo)
+               # adicona a pessoa na lista
+               lista_pessoas.append(pessoa_cadastrada)
+               #salva lista atualizada
+               salvar_arquivo(nome_arquivo, lista_pessoas)
 
-            # coloca essas informações em um dicionário
-            pessoa_cadastrada = {"código": codigo, "nome": nome, "cpf": cpf}
+           else:
+               turma_cadastrada = obter_dados_turma()
+               lista_de_turmas = ler_arquivo(nome_arquivo)
+               lista_de_turmas.append(turma_cadastrada)
+               # salva a lista atualizada
+               salvar_arquivo(nome_arquivo, lista_de_turmas)
+               print("\n Cadastro feito com sucesso!\n")
 
-            #atualiza a lista lendo o arquivo
-            lista_pessoas = ler_arquivo(nome_arquivo)
-
-            # adicona a pessoa na lista
-            lista_pessoas.append(pessoa_cadastrada)
-
-            # salva a lista atualizada
-            salvar_arquivo(nome_arquivo, lista_pessoas)
-            print("\n Cadastro feito com sucesso!\n")
-
-            # se a resposta for = "n" volte para o menu de operações
-            if input("Deseja cadastrar uma nova pessoa (s/n)? ") == "n":
-                 break
+           # se a resposta for = "n" volte para o menu de operações
+           if input("Deseja cadastrar uma nova pessoa (s/n)? ") == "n":
+                break
 
        except ValueError:
-          print(" ✖ Apenas números inteiros são considerados, tente novamente! \n")
+         print(" ✖ Apenas números inteiros são considerados, tente novamente! \n")
 
 
     print("Pressione ENTER para continuar.\n")
@@ -69,21 +92,44 @@ def incluir(nome_arquivo, lista_pessoas):
 
 
 # função para exibir a lista
-def listar(nome_arquivo):
-    lista_pessoas = ler_arquivo(nome_arquivo)
-    print("=========== LISTA ===========\n")
-    # se a lista estiver vazia, informe ao usuário
-    if len(lista_pessoas) == 0:
-        print("Não há ninguém cadastrado no momento!.\n")
-        print("=" * 29)
-    # senão, exibir a lista
-    else:
-        print("Lista de Cadastros:\n")
-        for dados in lista_pessoas:
-            print(f"Código: {dados['código']}")
-            print(f"Nome: {dados['nome']}")
-            print(f"CPF: {dados['cpf']}")
-            print("-" * 30)
+def listar(nome_arquivo, pessoa_cadastrada=True):
+
+
+        print("=========== LISTA ===========\n")
+
+        if pessoa_cadastrada == True:
+            lista_pessoas = ler_arquivo(nome_arquivo)
+            # se a lista estiver vazia, informe ao usuário
+            if len(lista_pessoas) == 0:
+                print("Não há ninguém cadastrado no momento!.\n")
+                print("=" * 29)
+            # senão, exibir a lista
+            else:
+                print("Lista de Cadastros:\n")
+                for dados in lista_pessoas:
+                    print(f"Código: {dados['código']}")
+                    print(f"Nome: {dados['nome']}")
+                    if "cpf" in dados:
+                        print(f"CPF: {dados['cpf']}")
+                    print("-" * 30)
+        else:
+            lista_de_turmas = ler_arquivo(nome_arquivo)
+            if len(lista_de_turmas) == 0:
+                print("Não há nenhuma turma cadastrada no momento!.\n")
+                print("=" * 29)
+            else:
+                print("Lista de Turmas:\n")
+                professores = ler_arquivo("professores.json")
+                disciplinas = ler_arquivo("disciplinas.json")
+
+
+
+                for turma in lista_de_turmas:
+                    if turma is not None:
+                        print(f"Código da Turma: {turma['Código da turma']} ")
+                        print(f"Professor: {turma['Código do professor']} ")
+                        print(f"Código da Disciplina: {turma['Código da disciplina']} ")
+                        print("-" * 30)
 
 
 # função para editar o cadastro
@@ -104,7 +150,8 @@ def editar(nome_arquivo):
                 print("Por favor, digite as novas informações de cadastro!\n")
                 editar_cadastro["código"] = int(input("\nInforme o novo código: "))
                 editar_cadastro["nome"] = input("Informe o novo nome: ")
-                editar_cadastro["cpf"] = input("Informe o novo CPF: ")
+                if "cpf" in editar_cadastro:
+                    editar_cadastro["cpf"] = input("Informe o novo CPF: ")
                 print("\nEdição feita com sucesso!\n")
                 salvar_arquivo(nome_arquivo, lista_pessoas)
                 break
@@ -161,14 +208,14 @@ def ler_arquivo(nome_arquivo):
 
 
 # função que abrange todas as funcionalidades do menu de operações
-def funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2):
+def funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2, pessoa_cadastrada=True, incluir_cpf=True):
     # se for opção 1, peça para que inclua alunos na lista
     if opcao2 == "1":
-        incluir(nome_arquivo, lista_pessoas)
+        incluir(nome_arquivo, lista_pessoas, pessoa_cadastrada, incluir_cpf)
 
     # se for opção 2, exibir a lista de alunos
     elif opcao2 == "2":
-        listar(nome_arquivo)
+        listar(nome_arquivo, pessoa_cadastrada)
 
     elif opcao2 == "3":
         editar(nome_arquivo)
@@ -186,6 +233,8 @@ def funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2):
         print("Você escolheu uma opção INVÁLIDA, tente novamente!\n")
 
     return True
+
+
 
 
 # mostre o menu principal enquanto o usuário n decidir sair
@@ -210,14 +259,59 @@ while True:
             # coletando a opção2
             opcao2 = input("Informe a opção desejada: ")
             print(f"Você escolheu a opção válida ({opcao2})\n")
-            continuar = funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2)
+            continuar = funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2, incluir_cpf=True)
+            if not continuar:
+                break
+
+    elif opcao == "2":
+        nome_arquivo = "professores.json"
+        while True:
+
+            # menu de operações
+            print(f"★★★★★ [PROFESSORES] MENU DE OPERAÇÕES ★★★★★\n")
+            mostrar_menu_operacoes()
+
+            # coletando a opção2
+            opcao2 = input("Informe a opção desejada: ")
+            print(f"Você escolheu a opção válida ({opcao2})\n")
+            continuar = funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2, incluir_cpf=True)
+            if not continuar:
+                break
+
+    # senão, se for uma dessas opções, informe que está em desenvolvimento
+
+    elif opcao == "3":
+        nome_arquivo = "disciplinas.json"
+        while True:
+
+            # menu de operações
+            print(f"★★★★★ [DISCIPLINAS] MENU DE OPERAÇÕES ★★★★★\n")
+            mostrar_menu_operacoes()
+
+            # coletando a opção2
+            opcao2 = input("Informe a opção desejada: ")
+            print(f"Você escolheu a opção válida ({opcao2})\n")
+            continuar = funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2, incluir_cpf=False)
+            if not continuar:
+                break
+
+    elif opcao == "4":
+        nome_arquivo = "turmas.json"
+        while True:
+
+            # menu de operações
+            print(f"★★★★★ [TURMAS] MENU DE OPERAÇÕES ★★★★★\n")
+            mostrar_menu_operacoes()
+
+            # coletando a opção2
+            opcao2 = input("Informe a opção desejada: ")
+            print(f"Você escolheu a opção válida ({opcao2})\n")
+            continuar = funcionalidades_menu_opercoes(nome_arquivo, lista_pessoas, opcao2, pessoa_cadastrada=False, incluir_cpf=False)
             if not continuar:
                 break
 
 
-
-    # senão, se for uma dessas opções, informe que está em desenvolvimento
-    elif opcao == "2" or opcao == "3" or opcao == "4" or opcao == "5":
+    elif opcao == "5":
         em_desenvolvimento()
 
     # senão, se a opção for = 9, volte para o menu principal
