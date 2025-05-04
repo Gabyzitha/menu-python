@@ -1,12 +1,12 @@
 [
     {
-        "Código da turma": 1,
-        "Código do professor": 1,
-        "Código da disciplina": 1
+        "codigo_turma": 1,
+        "codigo_professor": 3,
+        "codigo_disciplina": 1
     },
     {
-        "Código da turma": 2,
-        "Código do professor": 2,
-        "Código da disciplina": 2
+        "codigo_turma": 2,
+        "codigo_professor": 1,
+        "codigo_disciplina": 1
     }
 ]

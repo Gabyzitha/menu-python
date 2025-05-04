@@ -1,1 +1,17 @@
-[]
+[
+    {
+        "código": 1,
+        "nome": "Isabela",
+        "cpf": "1382949"
+    },
+    {
+        "código": 2,
+        "nome": "Manoel",
+        "cpf": "2457578"
+    },
+    {
+        "código": 3,
+        "nome": "Vanessa",
+        "cpf": "22349284"
+    }
+]

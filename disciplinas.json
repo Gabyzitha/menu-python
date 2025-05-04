@@ -1,10 +1,14 @@
 [
     {
         "código": 1,
-        "nome": "Matemática"
+        "nome": "Matemática Aplicada"
     },
     {
         "código": 2,
-        "nome": "Raciocínio computacional"
+        "nome": "Raciocínio Computacional "
+    },
+    {
+        "código": 3,
+        "nome": "Programação Orientada"
     }
 ]

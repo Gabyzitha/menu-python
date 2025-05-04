@@ -2,11 +2,16 @@
     {
         "código": 1,
         "nome": "Gabs",
-        "cpf": "123456789"
+        "cpf": "12324435"
     },
     {
         "código": 2,
         "nome": "Hanna",
-        "cpf": "239848945"
+        "cpf": "23434456"
+    },
+    {
+        "código": 3,
+        "nome": "Michaela",
+        "cpf": "324982895"
     }
 ]

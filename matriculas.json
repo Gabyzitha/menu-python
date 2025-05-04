@@ -1,0 +1,12 @@
+[
+    {
+        "codigo_matricula": 1,
+        "codigo_turma": 1,
+        "codigo_estudante": 3
+    },
+    {
+        "codigo_matricula": 2,
+        "codigo_turma": 2,
+        "codigo_estudante": 1
+    }
+]
